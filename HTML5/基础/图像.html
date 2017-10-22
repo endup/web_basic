@@ -1,0 +1,42 @@
+<html>
+<head>
+	NULL
+	<title>图像</title>
+</head>
+
+<body>	
+	<br>
+	<img src="001.png" width="128" height="100">
+	<br>
+	alt当图片不存在或者丢失了用来说明图片的内容<br>
+	<img src="002.png" width="100" alt="下载11">
+	<img src="0021.png" width="100" alt="下载11">
+	<br>
+<a href="http://www.baidu.com/" target="_blank">
+	<img src="002.png" width="100" alt="链接到百度">	
+</a>
+	
+	实现对一个图片不同地方的点击使其跳转到不同的URL<br><br>
+	测试图片上的点的位置<br>
+<form>
+	<input type="image" src="001.png" width="200">	<br>
+</form>
+	实现效果的图片<br>
+	<img src="001.png" width="200" alt="链接到百度" usemap="#map1"> <br>
+	rect coords的变量分别为x，y，x，y<br>
+<map name="map1">
+	<area href="http://www.baidu.com/" shape="rect" coords="0,0,100,100" target="_blank">
+	<area href="http://www.4399.com/" shape="rect" coords="100,0,200,100" target="_blank">
+	<area href="http://www.7k7k.com/" shape="circle" coords="100,150,50" target="_blank">
+</map>
+
+
+	<br><br>
+	<img src="002.png" width="200" alt="链接到百度" usemap="#map2"> <br>
+	circle coords的3个变量分别为圆心位置的x，y，半径<br>
+<map name="map2">
+	<area href="http://www.7k7k.com/" shape="circle" coords="100,100,100" target="_blank">
+</map>
+	
+</body>
+</html>

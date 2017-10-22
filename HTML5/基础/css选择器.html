@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>css选择器</title>
+
+	<style type="text/css">
+	.class1{
+		font-size:50;
+		color:#345cff
+	}			
+	#id1{
+		font-size:50;
+		color:#34FFff
+	}			
+
+	[href="http://www.baidu.com/"] {
+		font-size:100;
+		color:#FF0000;
+	}	
+
+	[href]{
+		font-size:100;
+		color:#FF0000;
+	}	
+
+	b{
+		font-size:50;
+		color:#FF0000;
+	}	
+	b:hover{
+		font-size:60;
+		color:#FF00FF;
+	}
+	</style>  声明文档内嵌样式 
+
+	 根据类选择<br>
+	根据id选择，id最后当只出现一次的时候使用<br>
+	根据属性选择，应该可以有很多属性，href只是其中一个<br>
+	冒号选择器，应该是特神奇的,hover只是其中的一个属性<br><br>
+<br>
+</head>
+	<a class="class1">选择器</a><br>
+	<b class="class1">选择器</b>
+	<h1 id="id1">选择器<h1>
+	<a href="http://www.baidu.com/">选择器</a> <br>
+	<b>选择器</b>
+
+</body>
+</html>

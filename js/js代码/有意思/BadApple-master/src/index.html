@@ -1,0 +1,54 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Bad Apple</title>
+	<script type="text/javascript" src="js/o.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">Bad Apple</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">首页</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container" style="margin-top:70px;">
+		<div class="jumbotron" style="padding:20px">
+			<div id="waitCont" class="container text-center">
+				<img class="img-thumbnail" src="res/wait.gif" alt="请稍等" style="margin:10px">
+				<h2>加载中，请稍等……</h2>
+			</div>
+			<div class="container">
+				<div class="col-md-8 col-md-offset-2">
+					<div id="show" class="text-center"></div>
+					<!-- <embed id="music" src="res/BadApple.mp3" autostart="false" hidden="true"> -->
+					<audio id="music" src="res/BadApple.mp3">请使用支持html5的浏览器</audio >
+				</div>
+			</div>
+			<div id="startCont" class="container text-center">
+				<div class="col-md-8 col-md-offset-2">
+					<button type="button" class="btn btn-lg btn-primary btn-block" onclick="show()">点击播放</button>
+				</div>
+			</div>
+			<div id="stopCont" class="container">
+				<div class="col-md-8 col-md-offset-2">
+					<button type="button" class="btn btn-lg btn-primary btn-block" onclick="stop()">停止</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container">
+			咚咚咚的小极客改编~转载请注明出处。
+		</div>
+	</nav>
+	
+	<script src="js/action.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>视频播放</title>
+</head>
+
+<body>
+	controlo表示视频下面的那个控制，preload表示对加载的控制，默认是auto，还有metadata载入第一帧，none不载入<br><br>
+	loop循环播放，poster是可以改变视频的第一张图片，muted是视频静音<br><br>
+	在video标签里面打字时没用的，但是可以用sourc标签来解决播放问题，也就是假如视频格式不兼容浏览器，那么则自动播放其他格式的视频。<br><br>
+<video src="001.mp4" height="200" controls preload="none" poster="001.png">
+	<source src="001.mp4" type="video/mp4">
+	<source src="001.ogv" type="video/ogg">
+</video>
+<br><br>
+Audio音频跟video视频的属性差不多，用法也是差不多<br>
+
+</body>
+</html>

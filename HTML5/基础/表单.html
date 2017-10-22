@@ -1,0 +1,97 @@
+<html>
+<head>
+	NULL
+	<title>表单</title>
+	
+</head>
+
+<body>
+
+<form>
+默认是text属性<br>
+	<input>
+	<input type="text"> <!--单行文本框-->
+	<input type="text" value="默认值"> 占位符<br>
+	<input type="text" placeholder="默认值"> 不占用文本框的占位符<br>
+	<input type="text" placeholder="默认值" maxlength="8"> 限制字符串的长度<br>
+	<input type="text" placeholder="默认值" size="50"> 修改文本框的长度<br>
+	<input type="text" placeholder="默认值" readonly> 只读<br>
+	<input type="password" placeholder="密码">密码的星星<br>
+多行文本框<br>
+
+	<textarea rows="20" cols="50">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</textarea>
+</form>
+
+表单二<br>
+<form>
+	范围和功能：button>input button>input submit   <br>
+	<input type="button" value="按钮">  不与js合作，但是具有普通的功能<br>
+	<button>按钮</button>   与js合作并作为绑定事件<br>
+	<input type="submit" value="提交">  提交表单<br>
+
+
+滑块<br>
+	<input type="range" min="-100" max="500" step="100" value="-100">
+	滑块(滑动)，最小值，最大值，步幅，初始值<br>
+数字属性<br>
+	<input type="number" min="-100" max="100" value="8">
+	number类型（手动填写），最小值，最大值，默认值<br>
+checkbox类
+	<input type="checkbox">checkbox型选择<br>
+	选择后可以取消<br>
+radio型
+	<input type="radio">radio型选择
+	选择后不可以取消<br>
+	三选一<br>
+	check默认选中<br>
+	<input type="radio" name="a" checked>选项1
+	<input type="radio" name="a">选项2
+	<input type="radio" name="a">选项3
+
+<br><br>
+
+	<select>
+	<option>apple</option>
+	<option>banana</option>
+	<option>melon</option>
+	<option>watermelon</option>
+	</select>
+
+
+	<input type="text" list="datalist1">
+
+	<datalist id="datalist1">
+	<option>apple</option>
+	<option>banana</option>
+	<option>melon</option>
+	<option>watermelon</option>
+	</datalist>
+
+</form>
+
+<form>
+	<input type="email"> <br>
+	<input type="tel"> <br>	
+	<input type="url"> <br>
+	获取时间的文本框  浏览器不同通常不同<br>
+	<input type="date"> 
+	获取颜色值<br>
+	<input type="color">
+	获取搜索用词<br>
+	<input type="search">	<br>
+	生成隐藏的数据项<br>
+	<input type="hidden" value="123">
+
+	导入图像  图片按钮<br>
+	<input type="image" src="001.png" width="400px"> <br>
+	<input type="image" src="002.png"> <br>
+
+	上传文件<br>
+	<input type="file">
+	<br>
+	<input type="file" multiple>
+</form>
+
+
+</body>
+</html>

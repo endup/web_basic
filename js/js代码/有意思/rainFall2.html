@@ -1,0 +1,128 @@
+﻿<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>雨滴下落</title>
+  <style type="text/css">
+			*{
+						margin:0;
+						padding:0;
+				}
+				body{
+						overflow:hidden;
+				}
+			canvas{
+					height:100%;
+					width:100%;
+					background:black;
+			}
+  </style>
+ </head>
+ <body>
+		<canvas id="canvas"></canvas>
+		<script type="text/javascript">
+
+				var canvas=document.getElementById('canvas');
+				//创建绘图环境
+				var ctx=canvas.getContext("2d");
+				//获取浏览器的宽高,并设置画布的宽高
+				var w=canvas.width=window.innerWidth;
+				var h=canvas.height=window.innerHeight;
+				//当浏览器窗口变化时改变画布大小
+				window.onresize=function(){
+						w=canvas.width=window.innerWidth;
+						h=canvas.height=window.innerHeight;
+				}
+					//创建雨滴对象
+					function Drop(){
+							
+					}
+					//添加对象方法
+					Drop.prototype={
+							init:function(){//初始化函数
+									//设置位置
+									this.x=random(0,w);
+									this.y=0;
+									//扩散的圆的半径
+									this.r=1;
+									//扩展速度
+									this.vr=1;
+									//判断扩散消失的透明度
+									this.a=1;
+									//透明的变化系数
+									this.va=0.96;
+									//下落速度
+									this.v=random(4,8);
+									//现在雨滴扩散的范围
+									this.l=random(0.8*h,0.9*h);
+							},
+
+							draw:function(){//绘制图形
+									if(this.y>this.l){
+										//雨滴下落到了指定位置,开始扩散
+										ctx.beginPath();
+										ctx.arc(this.x,this.y+15,this.r,0,Math.PI*2,false);
+										ctx.strokeStyle="rgb(0,255,255,"+this.a+")";
+										ctx.stroke();
+									}else{
+											ctx.fillStyle="rgb(0,255,255)";
+											ctx.fillRect(this.x,this.y,3,20);
+									}	
+									this.fall();
+							},
+
+							fall:function(){
+									if(this.y<=this.l){
+											this.y+=this.v;
+									}else{
+											//雨滴下落到了指定位置,开始扩散
+											if(this.a>0.03){
+													this.r+=this.vr;
+													ctx.arc(this.x,this.y+15,this.r,0,Math.PI*2,false);
+													ctx.strokeStyle="rgb(0,255,255,"+this.a+")";
+													ctx.stroke();
+														if(this.r>50){
+																this.a*=this.va;
+														}
+											}else{
+													//初始化雨滴数据
+													this.init();
+											}
+									}
+							}
+					}
+
+					//雨滴实例化对象
+					var drops=[];
+					for(var i=0;i<30;i++){
+							setTimeout(function(){
+									var drop=new Drop();
+									drop.init();
+									drops.push(drop);
+							},i*300);
+					}
+					move();
+
+
+					//生成随机数的方法
+					function random(min,max){
+							return Math.random()*(max-min)+min;
+					}
+					//雨滴下落
+					function move(){
+								//做出雨滴逐渐延伸的效果
+								//先绘制透明层再绘制雨滴,然后再绘制透明层,让后面的雨滴被透明层逐渐覆盖
+								ctx.fillStyle="rgb(0,0,0,0.1)";
+								ctx.fillRect(0,0,w,h);
+								for(var i=0,len=drops.length;i<len;i++){
+										drops[i].draw();
+								}
+								requestAnimationFrame(move);
+					}
+		</script>
+ </body>
+</html>

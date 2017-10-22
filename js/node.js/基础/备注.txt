@@ -1,0 +1,4 @@
+npm install mysql
+mysql只是其中一个模块，还有很多很多，express将mysql及其相关的东西下载到当前目录
+
+npm uninstall mysql

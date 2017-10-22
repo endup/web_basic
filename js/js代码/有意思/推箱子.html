@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>推箱子</title>
+<style type="text/css">
+	*{
+		margin:0;padding:0;
+	}
+	body{
+	}
+	#wrap{
+		margin:10px auto;
+		background:url(img/bg.jpg);
+		position:relative;
+	}
+	#wrap div{
+		width:35px;
+		height:35px;
+		position:absolute;
+		transition:0.5s;
+	}
+	#wrap div.box{
+		z-index:3
+	}
+	#wrap div.wall{
+		z-index:1
+	}
+	#wrap div.cave{
+		z-index:2
+	}
+	#wrap div.character{
+		z-index:4
+	}
+	#wrap div img{
+		position:absolute;
+		bottom:0;
+	}
+	#btn{
+		position:relative;
+		left:50%;
+	}
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<div id="btn">
+	<input type="button" id="auto" value="自动完成">
+	<input type="button" id="prev" value="上一步">
+	<input type="button" id="lastLevel" value="上一关">
+	<input type="button" id="nextLevel" value="下一关">
+</div>
+<script type="text/javascript">
+	//封装响应键盘的函数,并且做出自动执行的功能
+	window.onload=function(){
+		Game.exe();
+	}
+//处理游戏相关的
+	var Game={
+		//执行函数,对外的接口
+		exe:function(){
+			this.createMap(this.level);
+			//响应点击上一步
+			document.getElementById('prev').onclick=Game.prev;
+			//响应点击上一关
+			document.getElementById('lastLevel').onclick=function(){
+				if(Game.level>0){
+					Game.level--;
+					Game.exe();
+				}else{
+					alert("这是第一关呢");
+				}
+			}
+			//响应点击下一关
+			document.getElementById('nextLevel').onclick=function(){
+				if(Game.level<Game.mapData.length-1){
+					Game.level++;
+					Game.exe();
+				}else{
+					alert("已经是最后一关了兄弟");
+				}
+			}
+			//响应点击帮助
+			document.getElementById('auto').onclick=function(){
+				//重置地图
+				Game.createMap(Game.level);
+				var parent=Game.getClass('character')[0];
+				var person=parent.children[0];
+				var stepNum=0;
+				var timer=setInterval(function(){
+					var keycode=Game.passData[Game.level][stepNum];
+					Game.action(person,keycode);
+					stepNum++;
+					if(stepNum==Game.passData[Game.level].length){
+						claerInterval(timer);
+					}
+				},500);
+			}
+		},
+		gWrap:document.getElementById('wrap'),
+		
+		//关卡
+		level:0,
+		
+		//统计步数
+		stepNum:0,
+		
+		//地图大小
+		size:{x:16,y:16},
+		//创建地图
+		createMap:function(level){
+			//清空地图
+			this.gWrap.innerHTML='';
+			//清空步数数据
+			this.step.person=[];
+			this.step.box=[];
+			this.stepNum=0;
+			//设置地图大小
+			this.gWrap.style.cssText='width:'+Game.size.x*35+'px;height:'+Game.size.y*35+'px';
+			//人物
+			var person,gdiv,gimg;
+			//创建小格子放元素
+			for(var i=0,len=Game.size.x*Game.size.y;i<len;i++){
+				switch(this.mapData[level][i]){
+					case 1:
+						loadImg.call(this,i);
+						gimg.src='img/wall.jpg';
+						gdiv.className='wall';
+						break;
+					case 2:
+						loadImg.call(this,i);
+						gimg.src='img/cave.jpg';
+						gdiv.className='cave';
+						break;
+					case 3:
+						loadImg.call(this,i);
+						gimg.src='img/box.jpg';
+						gdiv.className='box';
+						break;
+					case 4:
+						loadImg.call(this,i);
+						gimg.src='img/character.jpg';
+						gdiv.className='character';
+						person=gimg;
+						break;
+				}
+			}
+			this.controlPerson(person);
+			//加载图中的物体
+			function loadImg(i){
+				var x=i%Game.size.x;
+				var y=parseInt(i/Game.size.x);
+				gdiv=document.createElement ('div');
+				gdiv.style.cssText = 'left:'+x*35+'px;top:'+y*35+'px;';
+				gdiv.x=x;
+				gdiv.y=y;
+				gimg=new Image();
+				gdiv.appendChild(gimg);
+				this.gWrap.appendChild(gdiv);
+			}
+		},
+		//控制人物
+		controlPerson:function(person){
+			document.onkeydown=function(event){
+				event=event || window.event;
+				var keyCode=event.keyCode;
+				Game.action(person,keyCode);
+			}
+		},
+		
+		//响应键盘事件的函数,为了求助按键准备
+		action:function(person,keyCode){
+			switch(keyCode){
+				case 65://向左
+					//person.src="";
+					Game.movePerson(person,{x:-1});
+					break;
+				case 87://向上
+					//person.src="";
+					Game.movePerson(person,{y:-1});
+					break;
+				case 68://向右
+					//person.src="";
+					Game.movePerson(person,{x:1});
+					break;
+				case 83://向下
+					//person.src="";
+					Game.movePerson(person,{y:1});
+					break;
+			}
+			return false;
+		},
+		//人物移动
+		movePerson:function(person,move){
+			var x=move.x || 0;
+			var y=move.y || 0;
+			var boxes=Game.getClass('box',Game.gWrap);
+			var parent=person.parentNode;
+			
+			if(Game.mapData[Game.level][(parent.x+x)+(parent.y+y)*Game.size.x]!=1){//判断前进路上是否有障碍物
+				Game.step.person[Game.stepNum] = {};
+				Game.step.person[Game.stepNum].x=parent.x;
+				Game.step.person[Game.stepNum].y=parent.y;
+				//移动人物
+				parent.x+=x;
+				parent.y+=y;
+				parent.style.left=parent.x*35+'px';
+				parent.style.top=parent.y*35+'px';
+				Game.stepNum++;
+				//判断是否有箱子
+				for(var i=0,len=boxes.length;i<len;i++){
+					if(boxes[i].x==parent.x && boxes[i].y==parent.y){
+						//判断箱子前是否有东西
+						if(Game.mapData[Game.level][(boxes[i].x+x)+(boxes[i].y+y)*Game.size.x]!=1){
+							
+							//记录箱子的相关位置
+							Game.step.box[Game.stepNum-1]={};
+							Game.step.box[Game.stepNum-1].index=i;
+							Game.step.box[Game.stepNum-1].x=boxes[i].x;
+							Game.step.box[Game.stepNum-1].y=boxes[i].y;
+							//准备移动箱子
+							boxes[i].x+=x;
+							boxes[i].y+=y;
+								//判断箱子是否跟其他箱子撞起来
+							if(Game.collision(boxes[i])){
+								//移动箱子
+								boxes[i].style.left=boxes[i].x*35+'px';
+								boxes[i].style.top=boxes[i].y*35+'px';
+								//判断游戏是否结束
+								Game.pass();
+							}else{
+								//撞上了箱子,箱子返回
+								boxes[i].x-=x;
+								boxes[i].y-=y;
+								Game.step.box.pop();
+								//撞上了箱子,人物返回
+								parent.x-=x;
+								parent.y-=y;
+								parent.style.left=parent.x*35+'px';
+								parent.style.top=parent.y*35+'px';
+								Game.step.person.pop();
+								Game.stepNum--;
+							}
+						}else{
+							//箱子前面有障碍
+							//人物返回
+							parent.x-=x;
+							parent.y-=y;
+							parent.style.left=parent.x*35+'px';
+							parent.style.top=parent.y*35+'px';
+							Game.step.person.pop();
+							Game.stepNum--;
+						}
+					}
+				}
+				//alert(Game.step.person[Game.stepNum-1].x+'!!'+Game.step.person[Game.stepNum-1].y+'!!'+Game.step.person.length);
+			}
+			
+		},
+		//箱箱碰撞
+		collision:function(obj){
+			var boxes=Game.getClass('box',Game.gWrap);
+			for(var i=0,len=boxes.length;i<len;i++){
+				if(boxes[i]!=obj){
+					if(boxes[i].x==obj.x && boxes[i].y==obj.y){
+						return false;
+					}
+				}
+			}
+			return true;
+		},
+		//拓展函数(根据className获取对象)
+		getClass: function(className,obj){
+			obj=obj || document;
+			if(obj.getElementsByClassName(className)){
+				return obj.getElementsByClassName(className);
+			}else {
+				var arr=[];
+				var allE=obj.getElementsByTagName('*');
+				for(var i=0,len=allE.length;i<len;i++){
+					var allEArr=allE[i].className.split(' ');
+					for(var j=0,len=allEArr.length;j<len;j++){
+						if(allEArr[j]==className){
+							arr.push(allE[i]);
+							break;
+						}
+					}
+				}
+				return arr;
+			}
+		},
+		//移动步骤存储
+		step:{
+		      	//人物移动数据
+		      	person:[],
+		      	//箱子移动数据
+		      	box:[]
+		},
+		//回到上一步的函数
+		prev:function(){
+			var person=Game.getClass('character',Game.gWrap)[0];
+			var boxes=Game.getClass('box',Game.gWrap);
+			var boxesNow;
+			if(Game.stepNum!=0){
+				person.x=Game.step.person[Game.stepNum-1].x;
+				person.y=Game.step.person[Game.stepNum-1].y;
+				person.style.left=person.x*35+'px';
+				person.style.top=person.y*35+'px';
+				if(Game.step.box[Game.stepNum-1]){
+					boxesNow=boxes[Game.step.box[Game.stepNum-1].index];
+					boxesNow.x=Game.step.box[Game.stepNum-1].x;
+					boxesNow.y=Game.step.box[Game.stepNum-1].y;
+					boxesNow.style.left=boxesNow.x*35+'px';
+					boxesNow.style.top=boxesNow.y*35+'px';
+				}
+				Game.stepNum--;
+			}
+		},
+		//过关检测
+		pass:function(){
+			var caves=this.getClass('cave',this.gWrap);
+			var boxes=this.getClass('box',this.gWrap);
+			var passNum=0;
+			for(var i=0,len=caves.length;i<len;i++){
+				for(var j=0,len=boxes.length;j<len;j++){
+					if(caves[i].x==boxes[j].x && caves[i].y==boxes[j].y){
+						passNum++;
+					}
+				}
+			}
+			if(passNum==boxes.length){
+				alert("恭喜你过关了");	
+				this.level++;
+				this.exe();
+			}
+		},
+		//通关数据
+		passData:[
+		          //第一关通关数据
+		          [
+					83,87,65,65,68,87,87,83,68,68
+		           ],
+		           [
+		            
+		           ]
+		         ],
+		
+		//关卡数据
+		mapData:[
+		         //第一关数据
+		         [
+			          //0代表空地,1代表墙,2代表洞,3代表箱子,4代表人
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,
+			          0,0,0,0,1,1,1,3,0,3,2,1,0,0,0,0,
+			          0,0,0,0,1,2,0,3,4,1,1,1,0,0,0,0,
+			          0,0,0,0,1,1,1,1,3,1,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		          ],
+		          //第二关
+		         [
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,
+					0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,
+					0,0,0,0,1,4,3,0,1,0,1,1,1,0,0,0,
+					0,0,0,0,1,0,3,3,1,0,1,2,1,0,0,0,
+					0,0,0,0,1,1,1,0,1,1,1,2,1,0,0,0,
+					0,0,0,0,0,1,1,0,0,0,0,2,1,0,0,0,
+					0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,
+					0,0,0,0,0,1,0,0,0,1,1,1,1,0,0,0,
+					0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+					0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		          ],
+		          
+		         [
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,
+						0,0,0,0,0,0,1,0,0,0,1,2,0,1,0,0,
+						0,0,0,0,0,1,1,0,0,3,2,2,2,1,0,0,
+						0,0,0,0,0,1,0,0,3,0,1,0,2,1,0,0,
+						0,0,0,0,1,1,0,1,1,3,1,0,1,1,0,0,
+						0,0,0,0,1,0,0,0,3,0,0,3,0,1,0,0,
+						0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,
+						0,0,0,0,1,1,1,1,1,1,1,4,0,1,0,0,
+						0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				],
+		],
+	};
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<html>
+<head>
+	<title>实例</title>
+
+	<style type="text/css">
+	.img{
+		width:400;
+		height:400;
+		margin-top:100;
+	}
+	html:hover .img{
+		animation-name:img;
+		animation-delay:500;
+		animation-duration:1s;
+		animation-fill-mode:forwards;
+	}
+	@keyframes img{
+		to{
+			width:100;
+			height:100;
+			margin-top:0;
+		}
+	}
+	.div{
+		text-align:center;
+	}
+	p{
+		font-family：微软雅黑;
+		font-size:50;
+		text-shadow:1px 1px 3px red;
+		opacity:1;
+	}
+	html:hover p{
+		transition-delay:500;
+		transition-duration:1s;
+		font-family：微软雅黑;
+		font-size:50;
+		text-shadow:1px 1px 3px red;
+		opacity:0;
+	}
+	
+	</style>
+	
+	animation-fill-mode:forwards;能让动画在最后保持。<br>
+	
+<br>
+<br>
+</head>
+<body>
+	<div class="div">
+	
+	<img src="002.png" class="img">
+	<p class="p">you are not alone</p>
+	</div>
+</body>
+</html>

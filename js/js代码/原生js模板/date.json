@@ -1,0 +1,36 @@
+{
+"main":[
+	{
+		"img":"01.jpg",
+		"price":"2501",
+		"sales":"32",
+		"title":"这是标题",
+		"store":"商店名字",
+		"address":"地址"
+	},
+	{
+		"img":"01.jpg",
+		"price":"2501",
+		"sales":"32",
+		"title":"这是标题",
+		"store":"商店名字",
+		"address":"地址"
+	},
+	{
+		"img":"01.jpg",
+		"price":"2501",
+		"sales":"32",
+		"title":"这是标题",
+		"store":"商店名字",
+		"address":"地址"
+	},
+	{
+		"img":"01.jpg",
+		"price":"2501",
+		"sales":"32",
+		"title":"这是标题",
+		"store":"商店名字",
+		"address":"地址"
+	}
+	]
+}

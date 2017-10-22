@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>css初步</title>
+
+	<style type="text/css">
+	a{
+		font-size:50;
+		color:#345cff;
+	}
+	</style>   声明文档内嵌样式 
+
+<br>
+	<link rel="stylesheet" type="text/css" href="a.css">  外部的css样式表，先要将其导入然后再使用<br><br>
+
+</head>
+	style，字体大小，字体颜色(225,225,225三原色但是用16进制表示)
+<br><br>
+
+<a>Css初步1</a>		文档内嵌样式表,要先在head标签内声明相关的样式<br>
+
+<a style="font-size:40px;color:#88228A">Css初步</a> 元素内嵌样式表<br>
+
+<a>Css初步</a>
+</body>
+</html>

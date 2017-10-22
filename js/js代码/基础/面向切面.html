@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>面向切面</title>
+ </head>
+ <body>
+  <script type="text/javascript">
+	function text(){
+		alert("2");
+		return "hello";
+	}
+	Function.prototype.before=function(fn){
+		var self=this;
+		//console.log(self);
+		return function(){
+			fn.apply(this,arguments);
+			var result=self.apply(self,arguments);
+			if(result){
+				return result;
+			}
+		}
+	}
+	Function.prototype.after=function(fn){
+		var self=this;
+		//console.log(self);
+		return function(){
+			var result=self.apply(self,arguments);
+			fn.apply(this,arguments);
+			if(result){
+				return result;
+			}
+			//return result;
+		}
+	}
+
+	//最先开始接收原函数的返回值得方式跟后面传递返回值得方式不一样
+	console.log(text.before(function(){
+		alert("1");
+	}).after(function(){
+		alert("3");
+	}).before(function (){
+		alert("0");
+	}).after(function(){
+		alert("4");
+	}).before(function (){
+		alert("-1");
+	}).after(function(){
+		alert("5");
+	})());
+
+
+	//console.log(text());
+	//faceCut(text);
+	//不知道算不算面向切面
+	function faceCut(fn){
+		//在函数执行前
+		alert("1");
+		fn();
+		//在函数执行后
+		alert("3");
+	}
+	/*
+
+	function around(obj, prop, advice){
+ 2  var exist = obj[prop];
+ 3  var previous = function(){
+ 4   return exist.apply(obj, arguments);
+ 5  };
+ 6  var advised = advice(previous);
+ 7  obj[prop] = function(){
+ 8    //当调用remove后，advised为空
+ 9     //利用闭包的作用域链中可以访问到advised跟previous变量，根据advised是否为空可以来决定调用谁
+10   return advised ? advised.apply(obj, arguments) : previous.apply(obj, arguments);
+11  };
+12  
+13  return {
+14   remove: function(){
+15     //利用闭包的作用域链，在remove时将advised置空，这样执行过程中不会进入本次around
+16    //这几个不能删
+17    //obj[prop] = exist;
+18    advised = null;
+19    advice = null;
+20    //previous = null;
+21    //exist = null;
+22    //obj = null;
+23   }
+24  }
+25 }
+26 var count = 1;
+27 advice = function(originalFunc){
+28  var current = count++;
+29  return function() {
+30   console.log("before function " + current);
+31   originalFunc.apply(this, arguments);
+32   console.log("after function " + current);
+33  }
+34 }
+35 var obj = {
+36  foo: function(arg){
+37   console.log(this.name + " and " + arg);
+38  },
+39  name: "obj"
+40 }
+41 
+42 h1 = around(obj, 'foo', advice);
+43 h2 = around(obj, 'foo', advice);
+44 obj.foo('hello world');
+45 h1.remove();
+46 obj.foo('hello world');
+47 h2.remove();
+48 obj.foo('hello world');
+
+*/
+
+/*
+	var fn = {
+watch: function(func, before, after){
+return function(){
+var args = [].slice.call(arguments);
+before && before.apply(this, args);
+var ret = func.apply(this, arguments);
+after && after.apply(this, [ret].concat(args));
+return ret;
+}
+}
+}
+
+var swipable = new Swipable({
+element: '.swipable-wrap',
+dir: 'horizontal'
+});
+
+swipable._scroll = fn.watch(swipable._scroll, function(pos){
+var p = pos / (swipable.min - swipable.max);
+$('#progress-bar .current').css('width', Math.min(p, 1.0) * 240 + 'px');
+});
+*/
+  </script>
+ </body>
+</html>

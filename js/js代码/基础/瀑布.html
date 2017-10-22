@@ -1,0 +1,264 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>瀑布</title>
+<style rel="stylesheet" type="text/css">
+*{
+	margin:0px;
+	padding:0px;
+}
+#container{
+	margin:0px auto;
+	position:relative;
+}
+.box{
+	padding:5px;
+	float:left;
+}
+.box_img{
+	padding:4px;
+	border:1px solid green;
+	box-shadow:0 0 5px black;
+	border-radius:5px;
+}
+.box_img img{
+	width:210px;
+}
+.box_img1{
+	padding:4px;
+	border:1px solid green;
+	box-shadow:0 0 5px black;
+	border-radius:5px;
+}
+.box_img1 img{
+	width:200px;
+	height:180px;
+}
+
+</style>
+<script>
+	window.onload=function(){
+		imgLocation("container","box");
+		//滚动到底的时候自动加载图片
+		var imgData={"data":[{"src":"1.jpg"},{"src":"2.jpg"},{"src":"3.jpg"},{"src":"4.jpg"},{"src":"5.jpg"}]}
+		window.onscroll=function(){
+			if(checkFlag()){
+				var cparent=document.getElementById("container");
+				for(var i=0;i<imgData.data.length;i++){
+					var content=document.createElement("div");
+					content.className="box";
+					cparent.appendChild(content);
+					var boximg=document.createElement("div");
+					boximg.className="box_img";
+					content.appendChild(boximg);
+					var img=document.createElement("img");
+					img.src=imgData.data[i].src;
+					boximg.appendChild(img);
+					
+					var content=document.createElement("div");
+					content.className="box";
+					cparent.appendChild(content);
+					var boximg=document.createElement("div");
+					boximg.className="box_img1";
+					content.appendChild(boximg);
+					var img=document.createElement("img");
+					img.src=imgData.data[i].src;
+					boximg.appendChild(img);
+				}
+				imgLocation("container","box");
+				
+			}
+		} 
+	}
+	//判断是否到底。
+	function checkFlag(){
+		var cparent=document.getElementById("container");
+		var content=getChildElement(cparent,"box");
+		var lastContentHeight=content[content.length-1].offsetTop;
+		var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+		var pageHeight=document.documentElement.clientHeight||document.body.clientHeight;
+		//console.log(lastContentHeight+":"+scrollTop+":"+pageHeight);
+		if(lastContentHeight<(scrollTop+pageHeight)+300){
+			return true;
+		}
+	}
+	function imgLocation(parent,content){
+		var cparent=document.getElementById(parent);
+		var content=getChildElement(cparent,content);
+		var imgWidth=content[0].offsetWidth;
+		var num=Math.floor(document.documentElement.clientWidth/imgWidth);
+		cparent.style.cssText="width:"+imgWidth*num+"px";
+		
+		var boxHeightArr=[];
+		for(var i=0;i<content.length;i++){
+			if(i<num){
+				boxHeightArr[i]=content[i].offsetHeight;
+				//window.alert(boxHeightArr[i]);
+			}else{
+				//计算出一行中最短列
+				var minHeight=Math.min.apply(null,boxHeightArr);
+				//获得最短列的排放位置
+				var minIndex=getMinHeightLocation(boxHeightArr,minHeight);
+				content[i].style.position="absolute";
+				//下一张图片放到最短列后
+				content[i].style.top=minHeight+"px";
+				content[i].style.left=content[minIndex].offsetLeft+"px";
+				//更新最短列的信息
+				boxHeightArr[minIndex]=boxHeightArr[minIndex]+content[i].offsetHeight;
+			}
+		}
+	}
+	function getMinHeightLocation(boxHeightArr,minHeight){
+		for(var i in boxHeightArr){
+			if(boxHeightArr[i]==minHeight){
+				return i;
+			}
+		}
+	}
+	function getChildElement(parent,content){
+		var contentArr=[];
+		var allContent=parent.getElementsByTagName("*");
+		for(var i=0;i<allContent.length;i++){
+			if(allContent[i].className==content){
+				contentArr.push(allContent[i]);
+			}
+		}
+		return contentArr;
+	}
+</script>
+</head>
+<body>
+<div id="container">
+	<div class="box">
+		<div class=box_img>
+			<img src="1.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="2.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="3.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="4.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="9.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="6.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="7.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="8.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="5.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="10.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="11.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="12.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="13.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="1.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="2.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="3.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="4.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="9.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="6.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="7.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="8.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="5.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="10.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="11.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img1>
+			<img src="12.jpg">
+		</div>
+	</div>
+	<div class="box">
+		<div class=box_img>
+			<img src="13.jpg">
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>从本地拖放</title>
+  <style type="text/css">
+	#div1{
+		width:400px;
+		height:400px;
+		background:red;
+	}
+  </style>
+ </head>
+ <body>
+  <div id="div1"></div>
+  <div id="div2"></div>
+  <script type="text/javascript">
+  var oDiv=document.getElementById('div1');
+  var oDiv2=document.getElementById('div2');
+  window.onload=function(){
+	oDiv.ondragover=function(e){
+		e.preventDefault();
+	}
+	oDiv.ondrop=function(e){
+		e.preventDefault();
+		//showObj(e.dataTransfer.files,oDiv2);
+		var f=e.dataTransfer.files[0];
+		var fileReader=new FileReader();
+		fileReader.onload=function(e){
+			showObj(e.target,oDiv2);
+			//oDiv.innerHTMl="<img src=\""+fileReader.result+"\">";
+			oDiv.innerHTML="<img src='"+fileReader.result+"'>";
+		}
+		fileReader.readAsDataURL(f);
+  }
+}
+  function showObj(obj,oDiv){
+	var s="";
+	for(var k in obj){
+		s+=k+":"+obj[k]+"<br/>";
+	}
+	oDiv.innerHTML=s;
+  }
+  </script>
+ </body>
+</html>

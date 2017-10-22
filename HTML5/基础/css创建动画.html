@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>创建动画</title>
+
+	<style type="text/css">
+	p{
+		width:100;
+		height:100;
+		background-color:antiquewhite;
+	}
+	p:hover{
+		animation-duration:2000ms;
+		animation-delay:300ms;
+		animation-name:lala;
+		animation-iteration-count:infinite;
+		animation-direction:alternate;
+	}
+	@keyframes lala{
+		from{
+			width:150;
+			height:150;
+			background-color:green;	
+		}
+		50%{
+			width:175;
+			height:175;
+			background-color:yellow;	
+		}
+		75%{
+			width:188;
+			height:188;
+			background-color:purple;	
+		}
+		to{
+			width:200;
+			height:200;
+			background-color:red;	
+		}
+	}
+	</style>
+	animation-name定义一个名字，跟下面的@keyframes互动<br>
+	@keyframes后面跟定义的animation-name 暂时还不清楚功能，但是好像可以用来控制动画<br>
+	@keyframes里面的to好像是用来定义末态的。<br>
+	animation-direction:默认是normal，还有一个是alternate让动画可以反向，也就是正向一次反向一次<br>
+	@keyframes里面的from,50%,75%,to,分别表示一个过程的中间状态。<br>
+	animation-iteration-count:infinite;表示无限重复，但是infinite可以换成数字来表示动画的次数。<br>
+	
+<br>
+<br>
+</head>
+<body>
+	<p></p>
+
+</body>
+</html>

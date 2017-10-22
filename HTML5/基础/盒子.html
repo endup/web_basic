@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>创建盒子模型</title>
+
+	<style type="text/css">
+	.div{
+		border:2 solid red;
+		background-color:antiquewhite;
+		text-align:center;
+		padding-top:100;
+		background-clip:content-box;
+		padding-left:100;
+		padding-right:100;
+		padding-bottom:150;
+		margin:100;
+	}
+	</style>
+	background-clip:content-box;只是内容区域铺满背景颜色，padding-box(默认，整个盒子)，border-box<br>
+	(内部)padding:100px,上下左右都是100，写两个值则前一个代表上下，后一个代表左右，写四个则分别对应上右下左。<br>
+	margin(外部)类似padding，也是有上下左右四个方向。<br>
+<br>
+<br>
+</head>
+<body>
+	<div class="div">you are not alone</div>
+</body>
+</html>

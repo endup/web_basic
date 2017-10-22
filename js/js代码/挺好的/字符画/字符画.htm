@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>img2txt：基于canvas的图片转字符画工具</title>
+    <style type="text/css">
+    * {margin: 0;padding: 0;}
+    body {font-size: 12px; margin: 10px; font-family: simsun; background: #fff;}
+    p { 
+		height: 8px;
+	}
+    #canvas, #txt {float: left;}
+    #canvas { margin-right: 10px;}
+</style>
+</head>
+<body>
+<div>
+    <input type="file" name="file" id="up-button"/>
+</div>
+	<canvas id="canvas">jdfka</canvas>
+	<div id="txt"></div>
+<script type="text/javascript">
+		//对canvas操作
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	var txtDiv = document.getElementById('txt');
+	var fileBtn = document.getElementById("up-button");
+	var img = new Image();
+	img.src = 'abn.jpg';
+	img.onload = init; // 图片加载完开始转换
+	fileBtn.onchange = getImg;
+
+	// 根据灰度生成相应字符
+	function toText(g) {
+		if (g <= 30) {
+			return 'O';
+		} else if (g > 30 && g <= 60) {
+			return '&';
+		} else if (g > 60 && g <= 120) {
+			return '$';
+		}  else if (g > 120 && g <= 150) {
+			return '*';
+		} else if (g > 150 && g <= 180) {
+			return 'o';
+		} else if (g > 180 && g <= 210) {
+			return '!';
+		} else if (g > 210 && g <= 240) {
+			return ';';
+		}  else {
+			return '.';
+		}
+	}
+
+
+	// 根据rgb值计算灰度
+	function getGray(R, G, B) {
+		/*
+			1、简化 sRGB IEC61966-2.1 [gamma=2.20]
+			Gray = (R^2.2 * 0.2126  + G^2.2  * 0.7152  + B^2.2  * 0.0722)^(1/2.2)
+			2、 Adobe RGB (1998) [gamma=2.20]
+			Gray = (R^2.2 * 0.2973  + G^2.2  * 0.6274  + B^2.2  * 0.0753)^(1/2.2)
+			3、Apple RGB [gamma=1.80]
+			Gray = (R^1.8 * 0.2446  + G^1.8  * 0.6720  + B^1.8  * 0.0833)^(1/1.8)
+			4、ColorMatch RGB [gamma=1.8]
+			Gray = (R^1.8 * 0.2750  + G^1.8  * 0.6581  + B^1.8  * 0.0670)^(1/1.8)
+			5、简化 KODAK DC Series Digital Camera [gamma=2.2]
+			Gray = (R^2.2 * 0.2229  + G^2.2  * 0.7175  + B^2.2  * 0.0595)^(1/2.2)
+		*/
+		//return (R^2.2 * 0.2973  + G^2.2  * 0.6274  + B^2.2  * 0.0753)^(1/2.2);
+		//return (R^1.8 * 0.2750  + G^1.8  * 0.6581  + B^1.8  * 0.0670)^(1/1.8);
+		//return (R^1.8 * 0.2446  + G^1.8  * 0.6720  + B^1.8  * 0.0833)^(1/1.8);
+		//return (R^2.2 * 0.2126  + G^2.2  * 0.7152  + B^2.2  * 0.0722)^(1/2.2);
+		//return (R^2.2 * 0.2229  + G^2.2  * 0.7175  + B^2.2  * 0.0595)^(1/2.2);
+		return 0.299 * R + 0.578 * G + 0.114 * B;
+	}
+
+	// 转换
+	function init() {
+		txtDiv.style.width = img.width + 'px';
+		canvas.width = img.width;
+		canvas.height = img.height;
+		ctx.drawImage(img, 0, 0);
+		var imgData = ctx.getImageData(0, 0, img.width, img.height);
+		var imgDataArr = imgData.data;
+		var imgDataWidth = imgData.width;
+		var imgDataHeight = imgData.height;
+		var html = '';
+		for (h = 0; h < imgDataHeight; h += 8) {
+			var p = '<p>';
+			for (w = 0; w < imgDataWidth; w += 6) {
+				var index = (w + imgDataWidth * h) * 4;
+				//console.log(index);
+				var r = imgDataArr[index + 0];
+				var g = imgDataArr[index + 1];
+				var b = imgDataArr[index + 2];
+				//var a = imgDataArr[index+3];
+				var gray = getGray(r, g, b);
+				p += toText(gray);
+			}
+			p += '</p>';
+			html += p;
+		}
+		txtDiv.innerHTML = html;
+	}
+
+	// 获取图片
+	function getImg(file) {
+		var reader = new FileReader();
+		reader.readAsDataURL(fileBtn.files[0]);
+		reader.onload = function () {
+			img.src = reader.result;
+		}
+	} 
+</script>
+</body>
+</html>
